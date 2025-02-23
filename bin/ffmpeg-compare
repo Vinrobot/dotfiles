@@ -1,0 +1,15 @@
+#!/bin/sh
+
+FILE1="$1"
+FILE2="$2"
+
+if [ ! -f "$FILE1" ]; then
+	echo "$0: File $FILE1 not found" >&2
+	exit 1
+fi
+if [ ! -f "$FILE2" ]; then
+	echo "$0: File $FILE2 not found" >&2
+	exit 1
+fi
+
+exec ffmpeg -hide_banner -i "$FILE1" -i "$FILE2" -map 0:v -map 1:v -lavfi "ssim;[0:v][1:v]psnr" -f null -

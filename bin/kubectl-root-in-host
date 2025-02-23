@@ -1,0 +1,57 @@
+#!/bin/sh
+# Source: https://gist.github.com/jjo/a8243c677f7e79f2f1d610f02365fdd7#file-kubectl-root-in-host-sh
+# Launch a Pod ab-using a privileged=true to land on a Kubernetes node cluster as root,
+# uses `privileged: true` to then nsenter init mount its (root) namespace,
+# hostPID and hostNetwork already set for the Pod.
+node=${1}
+case "${node}" in
+"")
+    nodeSelector=''
+    podName=${USER+${USER}-}sudo-any
+    ;;
+--master)
+    shift
+    nodeSelector='"nodeSelector": { "node-role.kubernetes.io/controlplane": "true"},'
+    podName=${USER+${USER}-}sudo-master
+    ;;
+--worker)
+    shift
+    nodeSelector='"nodeSelector": { "node-role.kubernetes.io/worker": "true"},'
+    podName=${USER+${USER}-}sudo-worker
+    ;;
+*)
+    shift
+    nodeName=$(kubectl get node ${node} ${@} -o template --template='{{index .metadata.labels "kubernetes.io/hostname"}}') || exit 1
+    nodeSelector='"nodeSelector": { "kubernetes.io/hostname": "'${nodeName:?}'" },'
+    podName=${USER+${USER}-}sudo-${node}
+    ;;
+esac
+set -x
+kubectl run ${podName:?} --restart=Never -it \
+    --image overriden --overrides '
+{
+  "spec": {
+    "hostPID": true,
+    "hostNetwork": true,
+    '"${nodeSelector?}"'
+    "tolerations": [
+      { "effect": "NoSchedule", "operator": "Exists" },
+      { "effect": "NoExecute", "operator": "Exists" }
+    ],
+    "containers": [
+      {
+        "name": "alpine",
+        "image": "alpine:3.7",
+        "command": [
+          "nsenter", "--mount=/proc/1/ns/mnt", "--", "su", "-"
+        ],
+        "stdin": true,
+        "tty": true,
+        "resources": {"requests": {"cpu": "10m"}},
+        "securityContext": {
+          "privileged": true
+        }
+      }
+    ]
+  }
+}' --rm --attach "$@"
