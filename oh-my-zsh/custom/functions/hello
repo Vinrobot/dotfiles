@@ -1,0 +1,3 @@
+#autoload -U
+
+echo "Hello World!"

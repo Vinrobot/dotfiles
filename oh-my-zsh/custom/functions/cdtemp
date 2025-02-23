@@ -1,0 +1,9 @@
+#autoload -U
+
+local TEMPDIR="$(mktemp)"
+
+rm "$TEMPDIR"
+mkdir "$TEMPDIR"
+cd "$TEMPDIR"
+
+pwd
