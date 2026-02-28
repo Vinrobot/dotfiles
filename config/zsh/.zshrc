@@ -90,6 +90,12 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='nvim'
 # fi
+if [[ "$TERM_PROGRAM" == "vscode" ]] && command -v code >/dev/null 2>&1; then
+	export VISUAL="code --wait"
+fi
+if command -v helix >/dev/null 2>&1; then
+	export EDITOR="helix"
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
