@@ -34,6 +34,8 @@ ZSH_THEME="vinrobot"
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
 
+zstyle ':omz:update' verbose minimal
+
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
 
