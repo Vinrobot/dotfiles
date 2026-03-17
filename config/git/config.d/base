@@ -1,0 +1,9 @@
+[init]
+	defaultBranch = main
+
+[submodule]
+	recurse = true
+
+[pager]
+	config = false
+	branch = false

@@ -1,2 +1,5 @@
+config/git/config
+config/git/config.d/local
+
 config/zsh/.zcompdump-*
 config/zsh/.zsh_history
