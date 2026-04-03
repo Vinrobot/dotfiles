@@ -5,8 +5,10 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
 export ZDOTDIR="${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}"
 
-export PATH="${HOME}/.local/bin:${PATH}"
+export KREW_ROOT="${KREW_ROOT:-$XDG_DATA_HOME/krew}"
 
 export KUBECACHEDIR="${XDG_CACHE_HOME}/kube"
 
 export WGETRC="${XDG_CONFIG_HOME}/wget/wgetrc"
+
+export PATH="${HOME}/.local/bin:${KREW_ROOT}/bin:${PATH}"
