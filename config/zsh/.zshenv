@@ -8,3 +8,5 @@ export ZDOTDIR="${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}"
 export PATH="${HOME}/.local/bin:${PATH}"
 
 export KUBECACHEDIR="${XDG_CACHE_HOME}/kube"
+
+export WGETRC="${XDG_CONFIG_HOME}/wget/wgetrc"
