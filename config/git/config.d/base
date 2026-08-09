@@ -4,6 +4,10 @@
 [submodule]
 	recurse = true
 
+[core]
+	pager = less -FRX
+
 [pager]
 	config = false
 	branch = false
+	stash = false
