@@ -8,12 +8,12 @@ link() {
   source="$DIR/$1"
   target="$2"
 
-  error="$(ln -rsT "$source" "$target" 2>&1 >/dev/null)" && {
+  error="$(ln -rsT -- "$source" "$target" 2>&1 >/dev/null)" && {
     >&2 echo "LINKED  $target -> $source"
     return
   }
 
-  if [ -L "$target" ] && [ "$(readlink -f "$target")" = "$(readlink -f "$source")" ]; then
+  if [ -L "$target" ] && [ "$(readlink -f -- "$target")" = "$(readlink -f -- "$source")" ]; then
     >&2 echo "OK      $target -> $source"
     return
   fi
@@ -21,6 +21,8 @@ link() {
   >&2 echo "ERROR: $error"
   exit 1
 }
+
+[ -d "$HOME/.config" ] || mkdir -- "$HOME/.config"
 
 link "config/git" "$HOME/.config/git"
 link "config/zsh" "$HOME/.config/zsh"
